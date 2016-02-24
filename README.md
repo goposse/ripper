@@ -86,7 +86,7 @@ We're the best friggin mobile shop in NYC that's who. Hey, but we're biased. Our
 
 ## Credits
 
-Haitch is sponsored, owned and maintained by [Posse Productions LLC](http://goposse.com). Follow us on Twitter [@goposse](https://twitter.com/goposse). Feel free to reach out with suggestions, ideas or to say hey.
+Ripper is sponsored, owned and maintained by [Posse Productions LLC](http://goposse.com). Follow us on Twitter [@goposse](https://twitter.com/goposse). Feel free to reach out with suggestions, ideas or to say hey.
 
 ### Security
 
