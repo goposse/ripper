@@ -1,5 +1,5 @@
 //
-//  ImageDownloader.swift
+//  Ripper.swift
 //  Ripper
 //
 //  Created by Posse in NYC
@@ -36,7 +36,7 @@ import UIKit
 import Haitch
 
 
-public class ImageDownloader {
+public class Ripper {
 
   private var url: String?
   private var imageName: String?
@@ -57,8 +57,8 @@ public class ImageDownloader {
 
 
   // MARK: - Singleton
-  public static let downloader: ImageDownloader = {
-    var instance: ImageDownloader = ImageDownloader()
+  public static let downloader: Ripper = {
+    var instance: Ripper = Ripper()
     return instance
   }()
 
@@ -78,24 +78,24 @@ public class ImageDownloader {
     self.imageCache.countLimit = self.cacheLimit
   }
 
-  public func load(url url: String) -> ImageDownloader {
+  public func load(url url: String) -> Ripper {
     self.url = url
     self.imageName = nil
     return self
   }
 
-  public func load(named named: String) -> ImageDownloader {
+  public func load(named named: String) -> Ripper {
     self.imageName = named
     self.url = nil
     return self
   }
 
-  public func placeholder(placeholderImage: UIImage) -> ImageDownloader {
+  public func placeholder(placeholderImage: UIImage) -> Ripper {
     self.placeholderImage = placeholderImage
     return self
   }
 
-  public func resize(width width: Double, height: Double) -> ImageDownloader {
+  public func resize(width width: Double, height: Double) -> Ripper {
     self.outputSize = CGSize(width: width, height: height)
     return self
   }
@@ -181,9 +181,6 @@ public class ImageDownloader {
   public func cancelRequest(target imageView: UIImageView) {
     if let fetcher: ImageFetcher = self.removeMapItem(target: imageView) {
       fetcher.cancel()
-//      dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//        imageView.image = nil
-//      })
     }
   }
 

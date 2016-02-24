@@ -38,6 +38,7 @@ datasources.xml
 *.pyc
 
 # carthage
+Cartfile.resolved
 /Carthage/Build/
 
 # dev stuff that might hang around
