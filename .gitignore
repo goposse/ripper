@@ -39,7 +39,7 @@ datasources.xml
 
 # carthage
 Cartfile.resolved
-/Carthage/Build/
+/Carthage
 
 # dev stuff that might hang around
 /dist/

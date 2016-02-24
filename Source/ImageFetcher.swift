@@ -51,8 +51,22 @@ public class ImageFetcher {
   public init(httpClient: HttpClient) {
     self.httpClient = httpClient
   }
+  
+  public func fetchAndReturnOnMain(imageUrl imageUrl: String, callback: ImageCallback) -> ImageFetcher {
+    return internalFetch(imageUrl: imageUrl) { (image, error) -> Void in
+      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        callback(image: image, error: error)
+      })
+    }
+  }
 
   public func fetch(imageUrl imageUrl: String, callback: ImageCallback) -> ImageFetcher {
+    return internalFetch(imageUrl: imageUrl) { (image, error) -> Void in
+      callback(image: image, error: error)
+    }
+  }
+  
+  private func internalFetch(imageUrl imageUrl: String, callback: ImageCallback) -> ImageFetcher {
     self.imageUrl = imageUrl
     var responseImage: UIImage?
     let request: Request = Request.Builder()
@@ -60,22 +74,21 @@ public class ImageFetcher {
       .method(Method.GET)
       .build()
     self.dataTask = self.httpClient.execute(request: request) { (response: Response?, error: NSError?) -> Void in
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        if !self.isCanceled {
-          if response != nil {
-            if let data: NSData = response!.data {
-              if let image: UIImage = UIImage(data: data) {
-                responseImage = image
-              }
+      if !self.isCanceled {
+        if response != nil {
+          if let data: NSData = response!.data {
+            if let image: UIImage = UIImage(data: data) {
+              responseImage = image
             }
           }
-          callback(image: responseImage, error: error)
         }
-      })
+      }
+      callback(image: responseImage, error: error)
     }
     return self
   }
-
+  
+  
   public func cancel() {
     self.isCanceled = true
   }

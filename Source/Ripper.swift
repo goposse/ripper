@@ -150,7 +150,7 @@ public class Ripper {
         return nil
       } else {
         let fetcher: ImageFetcher = ImageFetcher(httpClient: self.httpClient)
-        fetcher.fetch(imageUrl: imageUrl, callback: { (image, error) -> Void in
+        fetcher.fetchAndReturnOnMain(imageUrl: imageUrl, callback: { (image, error) -> Void in
           if image != nil {
             self.imageCache.setObject(image!, forKey: imageUrl)
           }
