@@ -1,6 +1,6 @@
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/goposse/ripper/assets/ripper_logo.png" align="center" width="273">
+<img src="https://raw.githubusercontent.com/goposse/ripper/assets/ripper_logo.png" align="center" width="460">
 </p>
 
 > <b>Ripper</b> : great, fantastic - "that is a ripper of an image downloader"<br/>
