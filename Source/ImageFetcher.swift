@@ -5,7 +5,7 @@
 //  Created by Posse in NYC
 //  http://goposse.com
 //
-//  Copyright (c) 2015 Posse Productions LLC.
+//  Copyright (c) 2016 Posse Productions LLC.
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -42,16 +42,16 @@ public typealias ImageCallback = (image: UIImage?, error: NSError?) -> Void
 
 
 public class ImageFetcher {
-  
+
   public var dataTask: NSURLSessionDataTask!
   private (set) public var isCanceled: Bool = false
   private var httpClient: HttpClient!
   private var imageUrl: String!
-  
+
   public init(httpClient: HttpClient) {
     self.httpClient = httpClient
   }
-  
+
   public func fetch(imageUrl imageUrl: String, callback: ImageCallback) -> ImageFetcher {
     self.imageUrl = imageUrl
     var responseImage: UIImage?
@@ -75,9 +75,8 @@ public class ImageFetcher {
     }
     return self
   }
-  
+
   public func cancel() {
     self.isCanceled = true
   }
 }
-

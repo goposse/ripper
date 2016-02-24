@@ -1,11 +1,11 @@
 //
-//  Haitch.h
-//  Haitch
+//  Ripper.h
+//  Ripper
 //
 //  Created by Posse in NYC
 //  http://goposse.com
 //
-//  Copyright (c) 2015 Posse Productions LLC.
+//  Copyright (c) 2016 Posse Productions LLC.
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without

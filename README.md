@@ -18,8 +18,8 @@ Ripper is an image download library written in Swift for iOS. It is simple, easy
 - Full featured, but none of the bloat
 - Easy to understand, Builder(ish)-based architecture
 - Download directly to a `UIImageView`, block, or both (so you can edit it before it ends up in your View)
-- Resize images on download simply
-- Built in request caching and cancelation
+- On-the-fly image resizing (other operations to come)
+- Built in image caching
 
 
 # Installation
@@ -43,9 +43,32 @@ Run `carthage update` and then follow the installation instructions [here](https
 
 # The basics
 
-To come
+Loading an image from a url into a `UIImageView` with a placeholder image is as easy as:
+
+```swift
+  Ripper.downloader
+    .load("http://somedomain.com/image.png")
+    .placeholder(UIImage(named: "my_placeholder"))
+    .into(myImageView)
+```
+
+If you want more control over the process you can simply execute the load request and do what you like with it:
+
+```swift
+Ripper.downloader
+  .load("http://somedomain.com/image.png")
+  .execute { (image, error) -> Void in
+    // do something with the image or handle error
+    // NOTE: this block will execute on main thread  
+  }
+```
+
 
 # FAQ
+
+## I wish it did ___ (or I found a bug)!
+
+Please log an issue in Github and we'll get back to you ASAP!
 
 ## Why should I use this?
 

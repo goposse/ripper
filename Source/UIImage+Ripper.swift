@@ -5,7 +5,7 @@
 //  Created by Posse in NYC
 //  http://goposse.com
 //
-//  Copyright (c) 2015 Posse Productions LLC.
+//  Copyright (c) 2016 Posse Productions LLC.
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -35,12 +35,12 @@
 import UIKit
 
 public extension UIImage {
-  
+
   // MARK: - Scaling functions
   public func scale(longestSide longestSide: Double) -> UIImage? {
     return scale(longestSide: longestSide, scaleUp: true)
   }
-  
+
   public func scale(longestSide longestSide: Double, scaleUp: Bool) -> UIImage? {
     let imageSize: CGSize = self.size
     let maxSide: Double = fmax(Double(imageSize.width), Double(imageSize.height))
@@ -51,7 +51,7 @@ public extension UIImage {
       return self.scale(percentage: scaleFactor)
     }
   }
-  
+
   public func scale(percentage percentage: Double) -> UIImage? {
     var imageSize: CGSize = self.size
     let cgPercentage = CGFloat(percentage)
@@ -59,11 +59,11 @@ public extension UIImage {
     imageSize.height *= cgPercentage
     return scale(size: imageSize, scaleUp: true)
   }
-  
+
   public func scale(size size: CGSize) -> UIImage? {
     return scale(size: size, scaleUp: true)
   }
-  
+
   public func scale(size size: CGSize, scaleUp: Bool) -> UIImage? {
     let imageSize: CGSize = self.size
     if CGSizeEqualToSize(size, CGSizeZero) {
@@ -84,5 +84,5 @@ public extension UIImage {
     }
     return nil
   }
-  
+
 }
