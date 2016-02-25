@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
   s.authors = { 'Posse Productions LLC' => 'apps@goposse.com' }
   s.source = { :git => 'https://github.com/goposse/ripper.git', :tag => s.version }
 
+  s.platform = :ios
   s.ios.deployment_target = '8.0'
-  s.osx.deployment_target = '10.9'
 
   s.source_files = 'Source/**/*.swift'
 
