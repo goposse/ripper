@@ -37,32 +37,32 @@ import Haitch
 
 
 public class Ripper {
-
+  
   private var url: String?
   private var imageName: String?
   private var placeholderImage: UIImage?
-  private var outputSize: CGSize = CGSizeZero
-
+  private var resizeFilter: ScaleFilter?
+  
   private var imageCache: NSCache
   private var httpClient: HttpClient!
   private var requestsMap: [UIImageView : ImageFetcher] = [:]
-
-
+  
+  
   // MARK: - Properties
   public var cacheLimit: Int = 50 {
     didSet {
       self.imageCache.countLimit = self.cacheLimit
     }
   }
-
-
+  
+  
   // MARK: - Singleton
   public static let downloader: Ripper = {
     var instance: Ripper = Ripper()
     return instance
   }()
-
-
+  
+  
   // MARK: - Initialization
   public init() {
     var clientConfiguration: HttpClientConfiguration = HttpClientConfiguration()
@@ -71,41 +71,42 @@ public class Ripper {
     self.imageCache = NSCache()
     self.imageCache.countLimit = self.cacheLimit
   }
-
+  
   public init(httpConfiguration: HttpClientConfiguration) {
     self.httpClient = HttpClient(configuration: httpConfiguration)
     self.imageCache = NSCache()
     self.imageCache.countLimit = self.cacheLimit
   }
-
+  
   public func load(url url: String) -> Ripper {
     self.url = url
     self.imageName = nil
     return self
   }
-
+  
   public func load(named named: String) -> Ripper {
     self.imageName = named
     self.url = nil
     return self
   }
-
+  
   public func placeholder(placeholderImage: UIImage) -> Ripper {
     self.placeholderImage = placeholderImage
     return self
   }
-
+  
   public func resize(width width: Double, height: Double) -> Ripper {
-    self.outputSize = CGSize(width: width, height: height)
+    self.resizeFilter = ScaleFilter()
+    self.resizeFilter!.outputSize = CGSize(width: width, height: height)
     return self
   }
-
-
+  
+  
   // MARK: - Download initialization
   public func into(imageView: UIImageView) {
     self.into(imageView, callback: nil)
   }
-
+  
   public func into(imageView: UIImageView, callback: ImageCallback?) {
     self.cancelRequest(target: imageView)
     // Check if image is available in the cache
@@ -115,7 +116,7 @@ public class Ripper {
         cachedImage = image
       }
     }
-
+    
     if cachedImage != nil {
       // If cached image is available, set it and do the callback
       imageView.image = cachedImage
@@ -125,7 +126,6 @@ public class Ripper {
     } else {
       // Otherwise, set the placeholder and fetch it
       imageView.image = self.placeholderImage
-
       let fetcher: ImageFetcher? = self.execute { (image: UIImage?, error: NSError?) -> Void in
         self.removeMapItem(target: imageView)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -142,34 +142,51 @@ public class Ripper {
       }
     }
   }
-
+  
+  
+  private func processFinalImage(image image: UIImage?) -> UIImage? {
+    guard image != nil else {
+      return image
+    }
+    var outImage: UIImage = image!
+    if let scaledImage = self.resizeFilter?.processImage(image: outImage) {
+      outImage = scaledImage
+    }
+    return outImage
+  }
+  
   public func execute(callback: ImageCallback) -> ImageFetcher? {
     if let imageUrl: String = self.url {
+      // has cached image, process cached (original) and continue
       if let image: UIImage = self.imageCache.objectForKey(imageUrl) as? UIImage {
-        callback(image: image, error: nil)
+        let cachedImage: UIImage? = processFinalImage(image: image)
+        callback(image: cachedImage, error: nil)
         return nil
       } else {
+        // no cached image, download + process
         let fetcher: ImageFetcher = ImageFetcher(httpClient: self.httpClient)
         fetcher.fetchAndReturnOnMain(imageUrl: imageUrl, callback: { (image, error) -> Void in
+          var processedImage: UIImage?
           if image != nil {
             self.imageCache.setObject(image!, forKey: imageUrl)
+            processedImage = self.processFinalImage(image: image)
           }
-          callback(image: image, error: error)
+          callback(image: processedImage, error: error)
         })
         return fetcher
       }
     } else if let imageName: String = self.imageName {
-      var responseImage: UIImage?
+      var processedImage: UIImage?
       if let image: UIImage = UIImage(named: imageName) {
-        responseImage = image.scale(size: self.outputSize)
+        processedImage = self.processFinalImage(image: image)
       }
-      callback(image: responseImage, error: nil)
+      callback(image: processedImage, error: nil)
     } else {
       callback(image: nil, error: nil)
     }
     return nil
   }
-
+  
   private func removeMapItem(target imageView: UIImageView) -> ImageFetcher? {
     if let fetcher: ImageFetcher = self.requestsMap[imageView] {
       self.requestsMap.removeValueForKey(imageView)
@@ -177,11 +194,11 @@ public class Ripper {
     }
     return nil
   }
-
+  
   public func cancelRequest(target imageView: UIImageView) {
     if let fetcher: ImageFetcher = self.removeMapItem(target: imageView) {
       fetcher.cancel()
     }
   }
-
+  
 }

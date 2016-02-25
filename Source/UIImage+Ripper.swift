@@ -35,12 +35,12 @@
 import UIKit
 
 public extension UIImage {
-
+  
   // MARK: - Scaling functions
   public func scale(longestSide longestSide: Double) -> UIImage? {
     return scale(longestSide: longestSide, scaleUp: true)
   }
-
+  
   public func scale(longestSide longestSide: Double, scaleUp: Bool) -> UIImage? {
     let imageSize: CGSize = self.size
     let maxSide: Double = fmax(Double(imageSize.width), Double(imageSize.height))
@@ -51,7 +51,7 @@ public extension UIImage {
       return self.scale(percentage: scaleFactor)
     }
   }
-
+  
   public func scale(percentage percentage: Double) -> UIImage? {
     var imageSize: CGSize = self.size
     let cgPercentage = CGFloat(percentage)
@@ -59,11 +59,11 @@ public extension UIImage {
     imageSize.height *= cgPercentage
     return scale(size: imageSize, scaleUp: true)
   }
-
+  
   public func scale(size size: CGSize) -> UIImage? {
     return scale(size: size, scaleUp: true)
   }
-
+  
   public func scale(size size: CGSize, scaleUp: Bool) -> UIImage? {
     let imageSize: CGSize = self.size
     if CGSizeEqualToSize(size, CGSizeZero) {
@@ -72,11 +72,19 @@ public extension UIImage {
     if !scaleUp && (size.width > imageSize.width || size.height > imageSize.height) {
       return self
     } else {
-      UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
       let cgImage = self.CGImage
       var scaledImage: UIImage? = UIImage(CGImage: cgImage!, scale: 0.0, orientation: self.imageOrientation)
       if scaledImage != nil {
-        scaledImage!.drawInRect(CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height))
+        var w: CGFloat = size.width, h: CGFloat = size.height
+        if w == 0.0 {
+          w = (size.height / imageSize.height) * imageSize.width
+        } else if h == 0.0 {
+          h = (size.width / imageSize.width) * imageSize.height
+        }
+        let outSize: CGSize = CGSize(width: w, height: h)
+        let outRect: CGRect = CGRect(x: 0.0, y: 0.0, width: w, height: h)
+        UIGraphicsBeginImageContextWithOptions(outSize, false, 0.0)
+        scaledImage!.drawInRect(outRect)
         scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return scaledImage
@@ -84,5 +92,5 @@ public extension UIImage {
     }
     return nil
   }
-
+  
 }

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Ripper'
-  s.version = '0.5'
+  s.version = '0.5.1'
   s.license = 'Posse'
   s.summary = 'Simple image downloads for Swift'
   s.homepage = 'https://github.com/goposse/ripper'

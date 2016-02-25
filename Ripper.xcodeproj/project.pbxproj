@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		A30C5F7B1BFD7AFE0084FF49 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A30C5F791BFD7AFE0084FF49 /* LICENSE */; };
+		A3ABA7001C7ED09A00CB1C11 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3ABA6FF1C7ED09A00CB1C11 /* Filter.swift */; };
+		A3ABA7021C7ED20500CB1C11 /* ScaleFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3ABA7011C7ED20500CB1C11 /* ScaleFilter.swift */; };
 		A3EBD9761C7D23EB0027FF0A /* Haitch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EBD9751C7D23EB0027FF0A /* Haitch.framework */; };
 		A3F8CD5B1C7D05A000C5E8B5 /* Ripper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F8CD581C7D05A000C5E8B5 /* Ripper.swift */; };
 		A3F8CD5C1C7D05A000C5E8B5 /* ImageFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F8CD591C7D05A000C5E8B5 /* ImageFetcher.swift */; };
@@ -18,6 +20,8 @@
 		A3034B801BFD61F4003F8705 /* Ripper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ripper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A30C5F791BFD7AFE0084FF49 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A30C5F7A1BFD7AFE0084FF49 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A3ABA6FF1C7ED09A00CB1C11 /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		A3ABA7011C7ED20500CB1C11 /* ScaleFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScaleFilter.swift; sourceTree = "<group>"; };
 		A3EBD9751C7D23EB0027FF0A /* Haitch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Haitch.framework; path = Carthage/Build/iOS/Haitch.framework; sourceTree = "<group>"; };
 		A3F8CD581C7D05A000C5E8B5 /* Ripper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ripper.swift; sourceTree = "<group>"; };
 		A3F8CD591C7D05A000C5E8B5 /* ImageFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageFetcher.swift; sourceTree = "<group>"; };
@@ -55,6 +59,31 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A3ABA6FC1C7ED04F00CB1C11 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A3F8CD5A1C7D05A000C5E8B5 /* UIImage+Ripper.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		A3ABA6FD1C7ED06100CB1C11 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				A3F8CD591C7D05A000C5E8B5 /* ImageFetcher.swift */,
+			);
+			name = Network;
+			sourceTree = "<group>";
+		};
+		A3ABA6FE1C7ED07300CB1C11 /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				A3ABA6FF1C7ED09A00CB1C11 /* Filter.swift */,
+				A3ABA7011C7ED20500CB1C11 /* ScaleFilter.swift */,
+			);
+			name = Filters;
+			sourceTree = "<group>";
+		};
 		A3EBD96A1C7D23750027FF0A /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -66,9 +95,10 @@
 		A3F8CD571C7D05A000C5E8B5 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				A3ABA6FC1C7ED04F00CB1C11 /* Extensions */,
+				A3ABA6FE1C7ED07300CB1C11 /* Filters */,
+				A3ABA6FD1C7ED06100CB1C11 /* Network */,
 				A3F8CD581C7D05A000C5E8B5 /* Ripper.swift */,
-				A3F8CD591C7D05A000C5E8B5 /* ImageFetcher.swift */,
-				A3F8CD5A1C7D05A000C5E8B5 /* UIImage+Ripper.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -152,6 +182,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3F8CD5B1C7D05A000C5E8B5 /* Ripper.swift in Sources */,
+				A3ABA7001C7ED09A00CB1C11 /* Filter.swift in Sources */,
+				A3ABA7021C7ED20500CB1C11 /* ScaleFilter.swift in Sources */,
 				A3F8CD5C1C7D05A000C5E8B5 /* ImageFetcher.swift in Sources */,
 				A3F8CD5D1C7D05A000C5E8B5 /* UIImage+Ripper.swift in Sources */,
 			);
