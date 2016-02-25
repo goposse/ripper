@@ -95,7 +95,7 @@ public class Ripper {
     return self
   }
   
-  public func resize(width width: Double, height: Double) -> Ripper {
+  public func resizeFilter(width width: Double, height: Double) -> Ripper {
     self.resizeFilter = ScaleFilter()
     self.resizeFilter!.outputSize = CGSize(width: width, height: height)
     return self
