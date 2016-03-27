@@ -44,6 +44,8 @@ public class Operation {
   internal var imageName: String?
   internal var placeholderImage: UIImage?
   internal var target: UIImageView?
+  internal var headers: [String : String]?
+  
   internal var fetcher: ImageFetcher?
   internal var filters: [Filter]?
   internal var downloader: Ripper!
@@ -60,6 +62,8 @@ public class Operation {
     self.downloader = downloader
     self.fetcher = ImageFetcher(httpClient: httpClient)
     self.state = .Ready
+    self.headers = [:]
+    self.filters = []
   }
 
   public convenience init(downloader: Ripper, httpClient: HttpClient, target: UIImageView) {
@@ -72,6 +76,32 @@ public class Operation {
   var state: State = State.Ready
   
   
+  // MARK: - Operation modification
+  public func placeholder(placeholderImage: UIImage) -> Operation {
+    self.placeholderImage = placeholderImage
+    return self
+  }
+  
+  public func putHeaders(headers: [String : String]) -> Operation {
+    self.headers = headers
+    return self
+  }
+  
+  public func addHeader(key: String, value: String) -> Operation {
+    if self.headers != nil {
+      self.headers![key] = value
+    }
+    return self
+  }
+
+  public func addFilter(filter: Filter) -> Operation {
+    if self.filters != nil {
+      self.filters!.append(filter)
+    }
+    return self
+  }
+
+  
   // MARK: - Operation execution
   public func into(imageView: UIImageView) {
     self.into(imageView, callback: nil)
@@ -79,6 +109,9 @@ public class Operation {
   
   public func into(imageView: UIImageView, callback: ImageCallback?) {
     self.target = imageView
+    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      self.target?.image = self.placeholderImage
+    })
     self.execute { (image, error) in
       if image != nil && error == nil {
         imageView.image = image
@@ -112,6 +145,9 @@ public class Operation {
       }
 
       if let fetcher: ImageFetcher = self.fetcher {
+        if self.headers != nil {
+          fetcher.headers = self.headers!
+        }
         fetcher.fetch(imageUrl: fetchURL, callback: { (image, error) in
           // Cancelled - we're done
           if self.state == .Cancelled {

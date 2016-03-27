@@ -45,10 +45,11 @@ public class Ripper {
   internal var targetOperationMap: [UIImageView : Operation]!
   internal var allOperations: [Operation]!
   internal var imageCache: NSCache
+  internal var headers: [String : String]?
+  internal var filters: [Filter]?
   
   
   // MARK: - Public properties
-  public var headers: [String : String]?
   public var cacheLimit: Int = 50 {
     didSet {
       self.imageCache.countLimit = self.cacheLimit
@@ -77,6 +78,10 @@ public class Ripper {
     // initialize the operation tracking arrays / maps
     self.targetOperationMap = [:]
     self.allOperations = []
+    
+    // initialize properties / defaults
+    self.headers = [:]
+    self.filters = []
   }
   
   public init(httpConfiguration: HttpClientConfiguration) {
@@ -97,6 +102,25 @@ public class Ripper {
     self.placeholderImage = placeholderImage
     return self
   }
+  
+  public func putHeaders(headers: [String : String]) -> Ripper {
+    self.headers = headers
+    return self
+  }
+  
+  public func addHeader(key: String, value: String) -> Ripper {
+    if self.headers != nil {
+      self.headers![key] = value
+    }
+    return self
+  }
+  
+  public func addFilter(filter: Filter) -> Ripper {
+    if self.filters != nil {
+      self.filters!.append(filter)
+    }
+    return self
+  }
 
   
   // MARK: - Operation creation
@@ -110,8 +134,14 @@ public class Ripper {
   
   private func makeOperation(url url: String?, named: String?) -> Operation {
     let operation: Operation = Operation(downloader: self, httpClient: self.httpClient)
+    if self.filters != nil {
+      operation.filters = self.filters
+    }
     if self.resizeFilter != nil {
       operation.filters = [ self.resizeFilter! ]
+    }
+    if self.headers != nil {
+      operation.headers = self.headers
     }
     operation.placeholderImage = self.placeholderImage
     return operation

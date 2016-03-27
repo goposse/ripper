@@ -47,6 +47,7 @@ public class ImageFetcher {
   private (set) public var isCanceled: Bool = false
   private var httpClient: HttpClient!
   private var imageUrl: String!
+  internal var headers: [String : String] = [:]
 
   public init(httpClient: HttpClient) {
     self.httpClient = httpClient
@@ -72,6 +73,7 @@ public class ImageFetcher {
     let request: Request = Request.Builder()
       .url(imageUrl)
       .method(Method.GET)
+      .headers(self.headers)
       .build()
     self.dataTask = self.httpClient.execute(request: request) { (response: Response?, error: NSError?) -> Void in
       if !self.isCanceled {
