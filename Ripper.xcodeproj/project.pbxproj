@@ -22,6 +22,7 @@
 		A304DF0E1C7EE20800A2CB35 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		A30C5F791BFD7AFE0084FF49 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A30C5F7A1BFD7AFE0084FF49 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A39215BA1CA7AD730095634C /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		A3ABA6FF1C7ED09A00CB1C11 /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		A3ABA7011C7ED20500CB1C11 /* ScaleFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScaleFilter.swift; sourceTree = "<group>"; };
 		A3EBD9751C7D23EB0027FF0A /* Haitch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Haitch.framework; path = Carthage/Build/iOS/Haitch.framework; sourceTree = "<group>"; };
@@ -48,6 +49,7 @@
 				A3F8CD571C7D05A000C5E8B5 /* Source */,
 				A3EBD96A1C7D23750027FF0A /* Library */,
 				A3034B811BFD61F4003F8705 /* Products */,
+				A39215BA1CA7AD730095634C /* Cartfile */,
 				A30C5F791BFD7AFE0084FF49 /* LICENSE */,
 				A30C5F7A1BFD7AFE0084FF49 /* README.md */,
 			);
