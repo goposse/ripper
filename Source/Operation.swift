@@ -82,7 +82,7 @@ public class Operation {
     return self
   }
   
-  public func putHeaders(headers: [String : String]) -> Operation {
+  public func HTTPHeaders(headers: [String : String]) -> Operation {
     self.headers = headers
     return self
   }
@@ -109,9 +109,11 @@ public class Operation {
   
   public func into(imageView: UIImageView, callback: ImageCallback?) {
     self.target = imageView
-    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-      self.target?.image = self.placeholderImage
-    })
+    if self.placeholderImage != nil {
+      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        self.target?.image = self.placeholderImage
+      })
+    }
     self.execute { (image, error) in
       if image != nil && error == nil {
         imageView.image = image
@@ -129,7 +131,6 @@ public class Operation {
       // don't execute callback because it was cancelled
       return
     }
-    
     
     self.state = .Executing
     

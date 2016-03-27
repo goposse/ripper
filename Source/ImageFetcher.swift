@@ -77,15 +77,20 @@ public class ImageFetcher {
       .build()
     self.dataTask = self.httpClient.execute(request: request) { (response: Response?, error: NSError?) -> Void in
       if !self.isCanceled {
-        print("error = \(error)")
+        var taskError: NSError? = error
         if response != nil {
-          if let data: NSData = response!.data {
-            if let image: UIImage = UIImage(data: data) {
-              responseImage = image
+          if response?.statusCode != 200 {
+            taskError = NSError(domain: "com.goposse.ripper", code: (response?.statusCode)!,
+                                userInfo: [ NSLocalizedDescriptionKey : "Image download failed" ])
+          } else {
+            if let data: NSData = response!.data {
+              if let image: UIImage = UIImage(data: data) {
+                responseImage = image
+              }
             }
           }
         }
-        callback(image: responseImage, error: error)
+        callback(image: responseImage, error: taskError)
       }
     }
     return self

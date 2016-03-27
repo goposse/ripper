@@ -103,12 +103,12 @@ public class Ripper {
     return self
   }
   
-  public func putHeaders(headers: [String : String]) -> Ripper {
+  public func HTTPHeaders(headers: [String : String]) -> Ripper {
     self.headers = headers
     return self
   }
   
-  public func addHeader(key: String, value: String) -> Ripper {
+  public func addHeader(key key: String, value: String) -> Ripper {
     if self.headers != nil {
       self.headers![key] = value
     }
@@ -134,6 +134,7 @@ public class Ripper {
   
   private func makeOperation(url url: String?, named: String?) -> Operation {
     let operation: Operation = Operation(downloader: self, httpClient: self.httpClient)
+    operation.url = url
     if self.filters != nil {
       operation.filters = self.filters
     }
