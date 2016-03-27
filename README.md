@@ -19,7 +19,8 @@ Ripper is an image download library written in Swift for iOS. It is simple, easy
 - Full featured, but none of the bloat
 - Easy to understand, Builder(ish)-based architecture
 - Download directly to a `UIImageView`, block, or both (so you can edit it before it ends up in your View)
-- On-the-fly image resizing (other operations to come)
+- On-the-fly global image resizing (other operations to come)
+- Image filters (global and operation-scoped)
 - Built in image caching
 - Powered by [Haitch](http://github.com/goposse/haitch)
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A304DF0F1C7EE20800A2CB35 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A304DF0E1C7EE20800A2CB35 /* Operation.swift */; };
 		A30C5F7B1BFD7AFE0084FF49 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A30C5F791BFD7AFE0084FF49 /* LICENSE */; };
 		A3ABA7001C7ED09A00CB1C11 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3ABA6FF1C7ED09A00CB1C11 /* Filter.swift */; };
 		A3ABA7021C7ED20500CB1C11 /* ScaleFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3ABA7011C7ED20500CB1C11 /* ScaleFilter.swift */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		A3034B801BFD61F4003F8705 /* Ripper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ripper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A304DF0E1C7EE20800A2CB35 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
 		A30C5F791BFD7AFE0084FF49 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A30C5F7A1BFD7AFE0084FF49 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A3ABA6FF1C7ED09A00CB1C11 /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
@@ -59,6 +61,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A304DF0D1C7EE1F500A2CB35 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				A304DF0E1C7EE20800A2CB35 /* Operation.swift */,
+			);
+			name = Requests;
+			sourceTree = "<group>";
+		};
 		A3ABA6FC1C7ED04F00CB1C11 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +108,7 @@
 				A3ABA6FC1C7ED04F00CB1C11 /* Extensions */,
 				A3ABA6FE1C7ED07300CB1C11 /* Filters */,
 				A3ABA6FD1C7ED06100CB1C11 /* Network */,
+				A304DF0D1C7EE1F500A2CB35 /* Requests */,
 				A3F8CD581C7D05A000C5E8B5 /* Ripper.swift */,
 			);
 			path = Source;
@@ -186,6 +197,7 @@
 				A3ABA7021C7ED20500CB1C11 /* ScaleFilter.swift in Sources */,
 				A3F8CD5C1C7D05A000C5E8B5 /* ImageFetcher.swift in Sources */,
 				A3F8CD5D1C7D05A000C5E8B5 /* UIImage+Ripper.swift in Sources */,
+				A304DF0F1C7EE20800A2CB35 /* Operation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
