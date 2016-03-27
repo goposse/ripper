@@ -77,6 +77,7 @@ public class ImageFetcher {
       .build()
     self.dataTask = self.httpClient.execute(request: request) { (response: Response?, error: NSError?) -> Void in
       if !self.isCanceled {
+        print("error = \(error)")
         if response != nil {
           if let data: NSData = response!.data {
             if let image: UIImage = UIImage(data: data) {
@@ -84,8 +85,8 @@ public class ImageFetcher {
             }
           }
         }
+        callback(image: responseImage, error: error)
       }
-      callback(image: responseImage, error: error)
     }
     return self
   }
