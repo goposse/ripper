@@ -137,6 +137,7 @@ public class Operation {
     if let fetchURL: String = self.url {
       // check the cache and return if image was found
       if let cachedImage: UIImage = self.downloader.imageCache.objectForKey(fetchURL) as? UIImage {
+        print("got image from cache")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
           let finalImage: UIImage? = self.processImage(cachedImage)
           self.finish()
@@ -154,6 +155,7 @@ public class Operation {
           if self.state == .Cancelled {
             return
           }
+          print("caching image")
           self.downloader.imageCache.setObject(image, forKey: fetchURL)
           let finalImage: UIImage? = self.processImage(image)
           self.finish()
