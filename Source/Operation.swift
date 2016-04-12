@@ -156,7 +156,9 @@ public class Operation {
             return
           }
           print("caching image")
-          self.downloader.imageCache.setObject(image, forKey: fetchURL)
+          if image != nil {
+            self.downloader.imageCache.setObject(image!, forKey: fetchURL)
+          }
           let finalImage: UIImage? = self.processImage(image)
           self.finish()
           dispatch_async(dispatch_get_main_queue(), { () -> Void in
