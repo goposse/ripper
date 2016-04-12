@@ -154,6 +154,7 @@ public class Operation {
           if self.state == .Cancelled {
             return
           }
+          self.downloader.imageCache.setObject(image, forKey: fetchURL)
           let finalImage: UIImage? = self.processImage(image)
           self.finish()
           dispatch_async(dispatch_get_main_queue(), { () -> Void in
