@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Ripper'
-  s.version = '0.5.2'
+  s.version = '0.6'
   s.license = 'Posse'
   s.summary = 'Simple image downloads for Swift'
   s.homepage = 'https://github.com/goposse/ripper'
@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Source/**/*.swift'
 
   s.requires_arc = true
-  s.dependency 'Haitch', '~> 0.5'
+  s.dependency 'Haitch', '~> 0.7'
 end
