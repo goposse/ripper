@@ -110,7 +110,9 @@ public class Operation {
   }
   
   public func into(imageView: UIImageView, callback: ImageCallback?) {
-    self.operationQueue.cancelOperation(target: imageView)
+    
+    self.operationQueue.cancelOperation(target: imageView)    // cancel previous operations
+    
     self.target = imageView
     if self.placeholderImage != nil {
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -121,17 +123,18 @@ public class Operation {
       if image != nil && error == nil {
         imageView.image = image
       }
-      self.operationQueue.finishOperation(imageView)
       // execute callback
       if callback != nil {
         callback!(image: image, error: error)
       }
+      self.operationQueue.finish(operation: self)
     }
   }
   
   public func execute(callback: ImageCallback) {
     if self.state == .Cancelled {
       // don't execute callback because it was cancelled
+      self.operationQueue.finish(operation: self)
       return
     }
     
@@ -143,7 +146,6 @@ public class Operation {
       if let cachedImage: UIImage = self.downloader.imageCache.objectForKey(fetchURL) as? UIImage {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
           let finalImage: UIImage? = self.processImage(cachedImage)
-          self.finish()
           callback(image: finalImage, error: nil)
         })
         return
@@ -156,13 +158,13 @@ public class Operation {
         fetcher.fetch(imageUrl: fetchURL, callback: { (image, error) in
           // Cancelled - we're done
           if self.state == .Cancelled {
+            self.operationQueue.finish(operation: self)
             return
           }
           if image != nil {
             self.downloader.imageCache.setObject(image!, forKey: fetchURL)
           }
           let finalImage: UIImage? = self.processImage(image)
-          self.finish()
           dispatch_async(dispatch_get_main_queue(), { () -> Void in
             callback(image: finalImage, error: error)
           })
@@ -171,12 +173,10 @@ public class Operation {
     } else if let imageName: String = self.imageName {
       let image: UIImage? = UIImage(named: imageName)
       let finalImage: UIImage? = self.processImage(image)
-      self.finish()
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
         callback(image: finalImage, error: nil)
       })
     } else {
-      self.finish()
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
         callback(image: nil, error: nil)
       })
@@ -203,11 +203,13 @@ public class Operation {
   
   
   // MARK: - Operation management
-  public func cancel() {
+  
+  // NOTE: you should call cancel and finish from the queue unless you know absolutely what you're doing
+  internal func cancel() {
     self.state = .Cancelled
   }
   
-  public func finish() {
+  internal func finish() {
     self.state = .Finished
   }
   

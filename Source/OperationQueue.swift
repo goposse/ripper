@@ -37,16 +37,14 @@ import UIKit
 
 internal class OperationQueue {
   
-  private var targetOperationMap: [UIView : Operation]
   private var allOperations: [Operation]
   private var downloader: Ripper
   
+  
+  // MARK: - Initialization
   init(downloader downloader: Ripper) {
     self.downloader = downloader
-
-    // initialize the operation tracking arrays / maps
-    self.targetOperationMap = [:]
-    self.allOperations = []
+    self.allOperations = []   // initialize the operation tracking array
   }
   
   
@@ -75,12 +73,7 @@ internal class OperationQueue {
 
   // MARK: - Operation management
   internal func registerOperation(operation operation: Operation) {
-    guard let target = operation.target else {
-      return
-    }
-    self.targetOperationMap[target] = operation
     self.allOperations.append(operation)
-    print("")
   }
   
   public func cancel(operation operation: Operation) {
@@ -88,15 +81,16 @@ internal class OperationQueue {
   }
   
   public func cancelOperation(target target: UIImageView) {
-    if let operation: Operation = self.targetOperationMap[target] {
-      self.targetOperationMap.removeValueForKey(target)
-      operation.cancel()
+    for operation in self.allOperations {
+      if operation.target === target {
+        operation.cancel()
+      }
     }
   }
   
-  internal func finishOperation(target: UIImageView) {
-    self.targetOperationMap.removeValueForKey(target)
+  internal func finish(operation operation: Operation) {
+    self.allOperations = self.allOperations.filter { $0 !== operation }
+    operation.finish()
   }
-
-  
+    
 }
