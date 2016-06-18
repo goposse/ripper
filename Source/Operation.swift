@@ -48,8 +48,9 @@ public class Operation {
   
   internal var fetcher: ImageFetcher?
   internal var filters: [Filter]?
+  internal var operationQueue: OperationQueue!
   internal var downloader: Ripper!
-
+  
   
   // MARK: - Types
   enum State {
@@ -58,16 +59,17 @@ public class Operation {
   
   
   // MARK: - Initialization
-  public init(downloader: Ripper, httpClient: HttpClient) {
+  internal init(operationQueue: OperationQueue, downloader: Ripper) {
+    self.operationQueue = operationQueue
     self.downloader = downloader
-    self.fetcher = ImageFetcher(httpClient: httpClient)
+    self.fetcher = ImageFetcher(httpClient: downloader.httpClient)
     self.state = .Ready
     self.headers = [:]
     self.filters = []
   }
 
-  public convenience init(downloader: Ripper, httpClient: HttpClient, target: UIImageView) {
-    self.init(downloader: downloader, httpClient: httpClient)
+  internal convenience init(operationQueue: OperationQueue, downloader: Ripper, target: UIImageView) {
+    self.init(operationQueue: operationQueue, downloader: downloader)
     self.target = target
   }
   
@@ -108,6 +110,7 @@ public class Operation {
   }
   
   public func into(imageView: UIImageView, callback: ImageCallback?) {
+    self.operationQueue.cancelOperation(target: imageView)
     self.target = imageView
     if self.placeholderImage != nil {
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -118,7 +121,7 @@ public class Operation {
       if image != nil && error == nil {
         imageView.image = image
       }
-      self.downloader.finishOperation(imageView)
+      self.operationQueue.finishOperation(imageView)
       // execute callback
       if callback != nil {
         callback!(image: image, error: error)
@@ -133,6 +136,7 @@ public class Operation {
     }
     
     self.state = .Executing
+    self.operationQueue.registerOperation(operation: self)    // registers operation execution in the queue
     
     if let fetchURL: String = self.url {
       // check the cache and return if image was found

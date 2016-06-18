@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A304DF0F1C7EE20800A2CB35 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A304DF0E1C7EE20800A2CB35 /* Operation.swift */; };
 		A30C5F7B1BFD7AFE0084FF49 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = A30C5F791BFD7AFE0084FF49 /* LICENSE */; };
+		A3A9B0391D16029B00701E0F /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9B0381D16029B00701E0F /* OperationQueue.swift */; };
 		A3ABA7001C7ED09A00CB1C11 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3ABA6FF1C7ED09A00CB1C11 /* Filter.swift */; };
 		A3ABA7021C7ED20500CB1C11 /* ScaleFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3ABA7011C7ED20500CB1C11 /* ScaleFilter.swift */; };
 		A3EBD9761C7D23EB0027FF0A /* Haitch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EBD9751C7D23EB0027FF0A /* Haitch.framework */; };
@@ -23,6 +24,7 @@
 		A30C5F791BFD7AFE0084FF49 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A30C5F7A1BFD7AFE0084FF49 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A39215BA1CA7AD730095634C /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		A3A9B0381D16029B00701E0F /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
 		A3ABA6FF1C7ED09A00CB1C11 /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		A3ABA7011C7ED20500CB1C11 /* ScaleFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScaleFilter.swift; sourceTree = "<group>"; };
 		A3EBD9751C7D23EB0027FF0A /* Haitch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Haitch.framework; path = Carthage/Build/iOS/Haitch.framework; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				A304DF0E1C7EE20800A2CB35 /* Operation.swift */,
+				A3A9B0381D16029B00701E0F /* OperationQueue.swift */,
 			);
 			name = Requests;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A3A9B0391D16029B00701E0F /* OperationQueue.swift in Sources */,
 				A3F8CD5B1C7D05A000C5E8B5 /* Ripper.swift in Sources */,
 				A3ABA7001C7ED09A00CB1C11 /* Filter.swift in Sources */,
 				A3ABA7021C7ED20500CB1C11 /* ScaleFilter.swift in Sources */,

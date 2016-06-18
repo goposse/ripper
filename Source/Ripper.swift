@@ -39,14 +39,14 @@ import Haitch
 public class Ripper {
   
   // MARK: - Internal / private properties
-  private var placeholderImage: UIImage?
-  private var resizeFilter: ScaleFilter?
-  private var httpClient: HttpClient!
-  internal var targetOperationMap: [UIImageView : Operation]!
-  internal var allOperations: [Operation]!
-  internal var imageCache: NSCache
+  internal var placeholderImage: UIImage?
+  internal var resizeFilter: ScaleFilter?
+  internal var httpClient: HttpClient!
+  internal var imageCache: NSCache!
   internal var headers: [String : String]?
   internal var filters: [Filter]?
+  
+  private var operationQueue: OperationQueue!
   
   
   // MARK: - Public properties
@@ -70,24 +70,28 @@ public class Ripper {
     var clientConfiguration: HttpClientConfiguration = HttpClientConfiguration()
     clientConfiguration.timeoutInterval = 60.0
     self.httpClient = HttpClient(configuration: clientConfiguration)
-    
-    // initialize the image cache
-    self.imageCache = NSCache()
-    self.imageCache.countLimit = self.cacheLimit
-    
-    // initialize the operation tracking arrays / maps
-    self.targetOperationMap = [:]
-    self.allOperations = []
-    
-    // initialize properties / defaults
-    self.headers = [:]
-    self.filters = []
+
+    initialize()  // common initialization
   }
   
   public init(httpConfiguration: HttpClientConfiguration) {
     self.httpClient = HttpClient(configuration: httpConfiguration)
     self.imageCache = NSCache()
+    
+    initialize()  // common initialization
+  }
+  
+  private func initialize() {
+    // initialize the image cache
+    self.imageCache = NSCache()
     self.imageCache.countLimit = self.cacheLimit
+    
+    // initialize properties / defaults
+    self.headers = [:]
+    self.filters = []
+    
+    // initialize the operation queue
+    self.operationQueue = OperationQueue(downloader: self)
   }
 
   
@@ -125,40 +129,12 @@ public class Ripper {
   
   // MARK: - Operation creation
   public func load(url url: String) -> Operation {
-    return makeOperation(url: url, named: nil)
+    return self.operationQueue.makeOperation(url: url, named: nil)
   }
   
   public func load(named named: String) -> Operation {
-    return makeOperation(url: nil, named: named)
+    return self.operationQueue.makeOperation(url: nil, named: named)
   }
   
-  private func makeOperation(url url: String?, named: String?) -> Operation {
-    let operation: Operation = Operation(downloader: self, httpClient: self.httpClient)
-    operation.url = url
-    if self.filters != nil {
-      operation.filters = self.filters
-    }
-    if self.resizeFilter != nil {
-      operation.filters = [ self.resizeFilter! ]
-    }
-    if self.headers != nil {
-      operation.headers = self.headers
-    }
-    operation.placeholderImage = self.placeholderImage
-    return operation
-  }
-  
-  
-  // MARK: - Operation management
-  public func cancelRequest(target target: UIImageView) {
-    if let operation: Operation = self.targetOperationMap[target] {
-      self.targetOperationMap.removeValueForKey(target)
-      operation.cancel()
-    }
-  }
-  
-  public func finishOperation(target: UIImageView) {
-    self.targetOperationMap.removeValueForKey(target)
-  }
   
 }
