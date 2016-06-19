@@ -42,7 +42,7 @@ internal class OperationQueue {
   
   
   // MARK: - Initialization
-  init(downloader downloader: Ripper) {
+  init(downloader: Ripper) {
     self.downloader = downloader
     self.allOperations = []   // initialize the operation tracking array
   }
@@ -76,11 +76,11 @@ internal class OperationQueue {
     self.allOperations.append(operation)
   }
   
-  public func cancel(operation operation: Operation) {
+  internal func cancel(operation operation: Operation) {
     operation.cancel()
   }
   
-  public func cancelOperation(target target: UIImageView) {
+  internal func cancelOperation(target target: UIImageView) {
     for operation in self.allOperations {
       if operation.target === target {
         operation.cancel()
