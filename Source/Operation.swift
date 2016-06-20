@@ -195,7 +195,7 @@ public class Operation {
   
   // MARK: - Image processing
   internal func processImage(image: UIImage?) -> UIImage? {
-    var finalImage: UIImage?
+    var finalImage: UIImage? = image
     if let srcImage: UIImage = image {
       finalImage = srcImage
       if self.filters != nil {

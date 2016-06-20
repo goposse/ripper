@@ -54,7 +54,7 @@ public class Ripper {
   
 
   // MARK: - Public properties
-  public var imageCacheMode: ImageCacheMode = .Originals
+  public var imageCacheMode: ImageCacheMode = .Processed
   public var cacheLimit: Int = 50 {
     didSet {
       self.imageCache.countLimit = self.cacheLimit

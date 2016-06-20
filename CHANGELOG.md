@@ -3,7 +3,7 @@
 
 ## 0.7.1
 
-- Adds and `imageCacheMode` property to `Ripper` instances to allow you to store either processed (final) images or the originals (default)
+- Adds and `imageCacheMode` property to `Ripper` instances to allow you to store either processed images or the originals. Default is `.Processed`.
 
 ## 0.7
 
