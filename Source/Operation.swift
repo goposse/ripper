@@ -145,7 +145,10 @@ public class Operation {
       // check the cache and return if image was found
       if let cachedImage: UIImage = self.downloader.imageCache.objectForKey(fetchURL) as? UIImage {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-          let finalImage: UIImage? = self.processImage(cachedImage)
+          var finalImage: UIImage? = cachedImage
+          if self.downloader.imageCacheMode == .Originals {
+            finalImage = self.processImage(cachedImage)
+          }
           callback(image: finalImage, error: nil)
         })
         return
@@ -161,10 +164,16 @@ public class Operation {
             self.operationQueue.finish(operation: self)
             return
           }
-          if image != nil {
-            self.downloader.imageCache.setObject(image!, forKey: fetchURL)
-          }
+          
           let finalImage: UIImage? = self.processImage(image)
+          if image != nil && finalImage != nil {
+            var cacheImage: UIImage = image!
+            if self.downloader.imageCacheMode == .Processed {
+              cacheImage = finalImage!
+            }
+            self.downloader.imageCache.setObject(cacheImage, forKey: fetchURL)
+          }
+          
           dispatch_async(dispatch_get_main_queue(), { () -> Void in
             callback(image: finalImage, error: error)
           })

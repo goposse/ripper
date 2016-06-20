@@ -35,6 +35,10 @@
 import UIKit
 import Haitch
 
+public enum ImageCacheMode {
+  case Originals
+  case Processed
+}
 
 public class Ripper {
   
@@ -48,8 +52,9 @@ public class Ripper {
   
   private var operationQueue: OperationQueue!
   
-  
+
   // MARK: - Public properties
+  public var imageCacheMode: ImageCacheMode = .Originals
   public var cacheLimit: Int = 50 {
     didSet {
       self.imageCache.countLimit = self.cacheLimit
