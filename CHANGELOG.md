@@ -1,6 +1,10 @@
 
 # Changelog
 
+## 0.7.1
+
+- Adds and `imageCacheMode` property to `Ripper` instances to allow you to store either processed (final) images or the originals (default)
+
 ## 0.7
 
 - Fixes an issue with cell reuse and image operation cancellation
