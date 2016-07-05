@@ -143,12 +143,10 @@ public class Operation {
     
     if let fetchURL: String = self.url {
       // check the cache and return if image was found
-      // return immediately if there is no need to process
       if let cachedImage: UIImage = self.downloader.imageCache.objectForKey(fetchURL) as? UIImage {
-        NSLog("CACHED IMAGE ZOMG!")
+        // return immediately if there is no need to process
         if self.filters == nil || self.filters?.count == 0 {
           callback(image: cachedImage, error: nil)
-          NSLog("INSTANT CALLBACK OH YEAH!")
           return
         } else {
           dispatch_async(dispatch_get_main_queue(), { () -> Void in
