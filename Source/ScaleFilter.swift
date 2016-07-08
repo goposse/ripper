@@ -39,6 +39,13 @@ public class ScaleFilter : Filter {
   
   public var outputSize: CGSize = CGSizeZero
   
+  public init() {
+  }
+  
+  public init(width: Double, height: Double) {
+    self.outputSize = CGSize(width: width, height: height)
+  }
+  
   public func processImage(image image: UIImage) -> UIImage? {
     return image.scale(size: self.outputSize)
   }

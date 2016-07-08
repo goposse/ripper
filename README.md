@@ -31,7 +31,7 @@ Ripper is an image download library written in Swift for iOS. It is simple, easy
 
 Add the following line to your `Podfile`:
 
-`pod 'Ripper', '~> 0.7'`
+`pod 'Ripper', '~> 0.8'`
 
 Then run `pod update` or `pod install` (if starting from scratch).
 
@@ -39,7 +39,7 @@ Then run `pod update` or `pod install` (if starting from scratch).
 
 Add the following line to your `Cartfile`:
 
-`github "goposse/ripper" ~> 0.7`
+`github "goposse/ripper" ~> 0.8`
 
 Run `carthage update` and then follow the installation instructions [here](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
