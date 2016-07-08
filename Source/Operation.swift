@@ -147,7 +147,6 @@ public class Operation {
         if self.downloader.imageCacheMode == .Originals && self.filters?.count > 0 {
           finalImage = self.processImage(cachedImage)
         }
-        print("Getting from cache: \(fetchURL) ...")
         callback(image: finalImage, error: nil)
         self.operationQueue.finish(operation: self)
         return
@@ -157,7 +156,6 @@ public class Operation {
         if self.headers != nil {
           fetcher.headers = self.headers!
         }
-        print("Fetching: \(fetchURL) ...")
         fetcher.fetch(imageUrl: fetchURL, callback: { (image, error) in
           
           let finalImage: UIImage? = self.processImage(image)
