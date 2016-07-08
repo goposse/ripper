@@ -145,7 +145,7 @@ public class Operation {
       // check the cache and return if image was found
       if let cachedImage: UIImage = self.downloader.imageCache.objectForKey(fetchURL) as? UIImage {
         var finalImage: UIImage? = cachedImage
-        if self.downloader.imageCacheMode == .Originals {
+        if self.downloader.imageCacheMode == .Originals && self.filters?.count > 0 {
           finalImage = self.processImage(cachedImage)
         }
         callback(image: finalImage, error: nil)
@@ -158,11 +158,10 @@ public class Operation {
         }
         fetcher.fetch(imageUrl: fetchURL, callback: { (image, error) in
           // Cancelled - we're done
+          self.operationQueue.finish(operation: self)
           if self.state == .Cancelled {
-            self.operationQueue.finish(operation: self)
             return
           }
-          
           let finalImage: UIImage? = self.processImage(image)
           if image != nil && finalImage != nil {
             var cacheImage: UIImage = image!
@@ -171,7 +170,6 @@ public class Operation {
             }
             self.downloader.imageCache.setObject(cacheImage, forKey: fetchURL)
           }
-          
           dispatch_async(dispatch_get_main_queue(), { () -> Void in
             callback(image: finalImage, error: error)
           })
@@ -180,13 +178,9 @@ public class Operation {
     } else if let imageName: String = self.imageName {
       let image: UIImage? = UIImage(named: imageName)
       let finalImage: UIImage? = self.processImage(image)
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        callback(image: finalImage, error: nil)
-      })
+      callback(image: finalImage, error: nil)
     } else {
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        callback(image: nil, error: nil)
-      })
+      callback(image: nil, error: nil)
     }
   }
   
