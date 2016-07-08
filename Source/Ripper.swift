@@ -42,6 +42,8 @@ public enum ImageCacheMode {
 
 public class Ripper {
   
+  static let DEFAULT_CACHE_COUNT = 100
+  
   // MARK: - Internal / private properties
   internal var placeholderImage: UIImage?
   internal var resizeFilter: ScaleFilter?
@@ -55,7 +57,7 @@ public class Ripper {
 
   // MARK: - Public properties
   public var imageCacheMode: ImageCacheMode = .Processed
-  public var cacheLimit: Int = 50 {
+  public var cacheLimit: Int = DEFAULT_CACHE_COUNT {
     didSet {
       self.imageCache.countLimit = self.cacheLimit
     }
@@ -81,7 +83,6 @@ public class Ripper {
   
   public init(httpConfiguration: HttpClientConfiguration) {
     self.httpClient = HttpClient(configuration: httpConfiguration)
-    self.imageCache = NSCache()
     
     initialize()  // common initialization
   }
@@ -89,7 +90,7 @@ public class Ripper {
   private func initialize() {
     // initialize the image cache
     self.imageCache = NSCache()
-    self.imageCache.countLimit = self.cacheLimit
+    self.imageCache.countLimit = Ripper.DEFAULT_CACHE_COUNT
     
     // initialize properties / defaults
     self.headers = [:]
