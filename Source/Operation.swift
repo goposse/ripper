@@ -127,7 +127,6 @@ public class Operation {
       if callback != nil {
         callback!(image: image, error: error)
       }
-      self.operationQueue.finish(operation: self)
     }
   }
   
@@ -148,6 +147,7 @@ public class Operation {
         if self.downloader.imageCacheMode == .Originals && self.filters?.count > 0 {
           finalImage = self.processImage(cachedImage)
         }
+        self.operationQueue.finish(operation: self)
         callback(image: finalImage, error: nil)
         return
       }
@@ -178,8 +178,10 @@ public class Operation {
     } else if let imageName: String = self.imageName {
       let image: UIImage? = UIImage(named: imageName)
       let finalImage: UIImage? = self.processImage(image)
+      self.operationQueue.finish(operation: self)
       callback(image: finalImage, error: nil)
     } else {
+      self.operationQueue.finish(operation: self)
       callback(image: nil, error: nil)
     }
   }
