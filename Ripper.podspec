@@ -9,10 +9,10 @@ Pod::Spec.new do |s|
   s.source = { :git => 'https://github.com/goposse/ripper.git', :tag => s.version }
 
   s.platform = :ios
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'Source/**/*.swift'
 
   s.requires_arc = true
-  s.dependency 'Haitch', '~> 0.7'
+  s.dependency 'Haitch', :git => 'git@github.com:goposse/ripper.git', :branch => 'swift3'
 end
