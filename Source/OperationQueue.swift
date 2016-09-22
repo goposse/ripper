@@ -37,8 +37,8 @@ import UIKit
 
 internal class OperationQueue {
   
-  private var allOperations: [Operation]
-  private var downloader: Ripper
+  fileprivate var allOperations: [Operation]
+  fileprivate var downloader: Ripper
   
   
   // MARK: - Initialization
@@ -49,7 +49,7 @@ internal class OperationQueue {
   
   
   // MARK: - Operation creation
-  internal func makeOperation(url url: String?, named: String?) -> Operation {
+  internal func makeOperation(url: String?, named: String?) -> Operation {
     
     let operation: Operation = Operation(operationQueue: self,
         downloader: self.downloader)
@@ -72,15 +72,15 @@ internal class OperationQueue {
   
 
   // MARK: - Operation management
-  internal func registerOperation(operation operation: Operation) {
+  internal func registerOperation(operation: Operation) {
     self.allOperations.append(operation)
   }
   
-  internal func cancel(operation operation: Operation) {
+  internal func cancel(operation: Operation) {
     operation.cancel()
   }
   
-  internal func cancelOperation(target target: UIImageView) {
+  internal func cancelOperation(target: UIImageView) {
     for operation in self.allOperations {
       if operation.target === target {
         operation.cancel()
@@ -88,7 +88,7 @@ internal class OperationQueue {
     }
   }
   
-  internal func finish(operation operation: Operation) {
+  internal func finish(operation: Operation) {
     self.allOperations = self.allOperations.filter { $0 !== operation }
     operation.finish()
   }

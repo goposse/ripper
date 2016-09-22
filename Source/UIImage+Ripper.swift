@@ -37,11 +37,11 @@ import UIKit
 public extension UIImage {
   
   // MARK: - Scaling functions
-  public func scale(longestSide longestSide: Double) -> UIImage? {
+  public func scale(longestSide: Double) -> UIImage? {
     return scale(longestSide: longestSide, scaleUp: true)
   }
   
-  public func scale(longestSide longestSide: Double, scaleUp: Bool) -> UIImage? {
+  public func scale(longestSide: Double, scaleUp: Bool) -> UIImage? {
     let imageSize: CGSize = self.size
     let maxSide: Double = fmax(Double(imageSize.width), Double(imageSize.height))
     let scaleFactor: Double = longestSide / maxSide
@@ -52,7 +52,7 @@ public extension UIImage {
     }
   }
   
-  public func scale(percentage percentage: Double) -> UIImage? {
+  public func scale(percentage: Double) -> UIImage? {
     var imageSize: CGSize = self.size
     let cgPercentage = CGFloat(percentage)
     imageSize.width *= cgPercentage
@@ -60,20 +60,20 @@ public extension UIImage {
     return scale(size: imageSize, scaleUp: true)
   }
   
-  public func scale(size size: CGSize) -> UIImage? {
+  public func scale(size: CGSize) -> UIImage? {
     return scale(size: size, scaleUp: true)
   }
   
-  public func scale(size size: CGSize, scaleUp: Bool) -> UIImage? {
+  public func scale(size: CGSize, scaleUp: Bool) -> UIImage? {
     let imageSize: CGSize = self.size
-    if CGSizeEqualToSize(size, CGSizeZero) {
+    if size.equalTo(CGSize.zero) {
       return self
     }
     if !scaleUp && (size.width > imageSize.width || size.height > imageSize.height) {
       return self
     } else {
-      let cgImage = self.CGImage
-      var scaledImage: UIImage? = UIImage(CGImage: cgImage!, scale: 0.0, orientation: self.imageOrientation)
+      let cgImage = self.cgImage
+      var scaledImage: UIImage? = UIImage(cgImage: cgImage!, scale: 0.0, orientation: self.imageOrientation)
       if scaledImage != nil {
         var w: CGFloat = size.width, h: CGFloat = size.height
         if w == 0.0 {
@@ -84,7 +84,7 @@ public extension UIImage {
         let outSize: CGSize = CGSize(width: w, height: h)
         let outRect: CGRect = CGRect(x: 0.0, y: 0.0, width: w, height: h)
         UIGraphicsBeginImageContextWithOptions(outSize, false, 0.0)
-        scaledImage!.drawInRect(outRect)
+        scaledImage!.draw(in: outRect)
         scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return scaledImage

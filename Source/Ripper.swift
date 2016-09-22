@@ -36,11 +36,11 @@ import UIKit
 import Haitch
 
 public enum ImageCacheMode {
-  case Originals
-  case Processed
+  case originals
+  case processed
 }
 
-public class Ripper {
+open class Ripper {
   
   static let DEFAULT_CACHE_COUNT = 100
   
@@ -48,16 +48,16 @@ public class Ripper {
   internal var placeholderImage: UIImage?
   internal var resizeFilter: ScaleFilter?
   internal var httpClient: HttpClient!
-  internal var imageCache: NSCache!
+  internal var imageCache: NSCache<AnyObject, AnyObject>!
   internal var headers: [String : String]?
   internal var filters: [Filter]?
   
-  private var operationQueue: OperationQueue!
+  fileprivate var operationQueue: OperationQueue!
   
 
   // MARK: - Public properties
-  public var imageCacheMode: ImageCacheMode = .Processed
-  public var cacheLimit: Int = DEFAULT_CACHE_COUNT {
+  open var imageCacheMode: ImageCacheMode = .processed
+  open var cacheLimit: Int = DEFAULT_CACHE_COUNT {
     didSet {
       self.imageCache.countLimit = self.cacheLimit
     }
@@ -65,7 +65,7 @@ public class Ripper {
   
   
   // MARK: - Singleton
-  public static let downloader: Ripper = {
+  open static let downloader: Ripper = {
     var instance: Ripper = Ripper()
     return instance
   }()
@@ -87,7 +87,7 @@ public class Ripper {
     initialize()  // common initialization
   }
   
-  private func initialize() {
+  fileprivate func initialize() {
     // initialize the image cache
     self.imageCache = NSCache()
     self.imageCache.countLimit = Ripper.DEFAULT_CACHE_COUNT
@@ -102,30 +102,30 @@ public class Ripper {
 
   
   // MARK: - Global operations / properties
-  public func resizeFilter(width width: Double, height: Double) -> Ripper {
+  open func resizeFilter(width: Double, height: Double) -> Ripper {
     self.resizeFilter = ScaleFilter()
     self.resizeFilter!.outputSize = CGSize(width: width, height: height)
     return self
   }
 
-  public func placeholder(placeholderImage: UIImage) -> Ripper {
+  open func placeholder(_ placeholderImage: UIImage) -> Ripper {
     self.placeholderImage = placeholderImage
     return self
   }
   
-  public func HTTPHeaders(headers: [String : String]) -> Ripper {
+  open func HTTPHeaders(_ headers: [String : String]) -> Ripper {
     self.headers = headers
     return self
   }
   
-  public func addHeader(key key: String, value: String) -> Ripper {
+  open func addHeader(key: String, value: String) -> Ripper {
     if self.headers != nil {
       self.headers![key] = value
     }
     return self
   }
   
-  public func addFilter(filter: Filter) -> Ripper {
+  open func addFilter(_ filter: Filter) -> Ripper {
     if self.filters != nil {
       self.filters!.append(filter)
     }
@@ -134,11 +134,11 @@ public class Ripper {
 
   
   // MARK: - Operation creation
-  public func load(url url: String) -> Operation {
+  open func load(url: String) -> Operation {
     return self.operationQueue.makeOperation(url: url, named: nil)
   }
   
-  public func load(named named: String) -> Operation {
+  open func load(named: String) -> Operation {
     return self.operationQueue.makeOperation(url: nil, named: named)
   }
   

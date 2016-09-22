@@ -35,9 +35,29 @@
 import Foundation
 import UIKit
 import Haitch
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
 
 
-public class Operation {
+
+open class Operation {
   
   // MARK: - Properties
   internal var url: String?
@@ -54,7 +74,7 @@ public class Operation {
   
   // MARK: - Types
   enum State {
-    case Ready, Executing, Finished, Cancelled
+    case ready, executing, finished, cancelled
   }
   
   
@@ -63,7 +83,7 @@ public class Operation {
     self.operationQueue = operationQueue
     self.downloader = downloader
     self.fetcher = ImageFetcher(httpClient: downloader.httpClient)
-    self.state = .Ready
+    self.state = .ready
     self.headers = [:]
     self.filters = []
   }
@@ -75,28 +95,28 @@ public class Operation {
   
   
   // MARK: - Properties
-  var state: State = State.Ready
+  var state: State = State.ready
   
   
   // MARK: - Operation modification
-  public func placeholder(placeholderImage: UIImage) -> Operation {
+  open func placeholder(_ placeholderImage: UIImage) -> Operation {
     self.placeholderImage = placeholderImage
     return self
   }
   
-  public func HTTPHeaders(headers: [String : String]) -> Operation {
+  open func HTTPHeaders(_ headers: [String : String]) -> Operation {
     self.headers = headers
     return self
   }
   
-  public func addHeader(key: String, value: String) -> Operation {
+  open func addHeader(_ key: String, value: String) -> Operation {
     if self.headers != nil {
       self.headers![key] = value
     }
     return self
   }
 
-  public func addFilter(filter: Filter) -> Operation {
+  open func addFilter(_ filter: Filter) -> Operation {
     if self.filters != nil {
       self.filters!.append(filter)
     }
@@ -105,17 +125,17 @@ public class Operation {
 
   
   // MARK: - Operation execution
-  public func into(imageView: UIImageView) {
+  open func into(_ imageView: UIImageView) {
     self.into(imageView, callback: nil)
   }
   
-  public func into(imageView: UIImageView, callback: ImageCallback?) {
+  open func into(_ imageView: UIImageView, callback: ImageCallback?) {
     
     self.operationQueue.cancelOperation(target: imageView)    // cancel previous operations
     
     self.target = imageView
     if self.placeholderImage != nil {
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+      DispatchQueue.main.async(execute: { () -> Void in
         self.target?.image = self.placeholderImage
       })
     }
@@ -125,29 +145,29 @@ public class Operation {
       }
       // execute callback
       if callback != nil {
-        callback!(image: image, error: error)
+        callback!(image, error)
       }
     }
   }
   
-  public func execute(callback: ImageCallback) {
-    if self.state == .Cancelled {
+  open func execute(_ callback: @escaping ImageCallback) {
+    if self.state == .cancelled {
       // don't execute callback because it was cancelled
       self.operationQueue.finish(operation: self)
       return
     }
     
-    self.state = .Executing
+    self.state = .executing
     self.operationQueue.registerOperation(operation: self)    // registers operation execution in the queue
     
     if let fetchURL: String = self.url {
       // check the cache and return if image was found
-      if let cachedImage: UIImage = self.downloader.imageCache.objectForKey(fetchURL) as? UIImage {
+      if let cachedImage: UIImage = self.downloader.imageCache.object(forKey: fetchURL as AnyObject) as? UIImage {
         var finalImage: UIImage? = cachedImage
-        if self.downloader.imageCacheMode == .Originals && self.filters?.count > 0 {
+        if self.downloader.imageCacheMode == .originals && self.filters?.count > 0 {
           finalImage = self.processImage(cachedImage)
         }
-        callback(image: finalImage, error: nil)
+        callback(finalImage, nil)
         self.operationQueue.finish(operation: self)
         return
       }
@@ -161,20 +181,20 @@ public class Operation {
           let finalImage: UIImage? = self.processImage(image)
           if image != nil && finalImage != nil {
             var cacheImage: UIImage = image!
-            if self.downloader.imageCacheMode == .Processed {
+            if self.downloader.imageCacheMode == .processed {
               cacheImage = finalImage!
             }
-            self.downloader.imageCache.setObject(cacheImage, forKey: fetchURL)
+            self.downloader.imageCache.setObject(cacheImage, forKey: fetchURL as AnyObject)
           }
 
           // Cancelled - we're done
-          if self.state == .Cancelled {
+          if self.state == .cancelled {
             self.operationQueue.finish(operation: self)
             return
           }
           
-          dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            callback(image: finalImage, error: error)
+          DispatchQueue.main.async(execute: { () -> Void in
+            callback(finalImage, error)
             self.operationQueue.finish(operation: self)
           })
         })
@@ -182,17 +202,17 @@ public class Operation {
     } else if let imageName: String = self.imageName {
       let image: UIImage? = UIImage(named: imageName)
       let finalImage: UIImage? = self.processImage(image)
-      callback(image: finalImage, error: nil)
+      callback(finalImage, nil)
       self.operationQueue.finish(operation: self)
     } else {
-      callback(image: nil, error: nil)
+      callback(nil, nil)
       self.operationQueue.finish(operation: self)      
     }
   }
   
   
   // MARK: - Image processing
-  internal func processImage(image: UIImage?) -> UIImage? {
+  internal func processImage(_ image: UIImage?) -> UIImage? {
     var finalImage: UIImage? = image
     if let srcImage: UIImage = image {
       finalImage = srcImage
@@ -213,11 +233,11 @@ public class Operation {
   
   // NOTE: you should call cancel and finish from the queue unless you know absolutely what you're doing
   internal func cancel() {
-    self.state = .Cancelled
+    self.state = .cancelled
   }
   
   internal func finish() {
-    self.state = .Finished
+    self.state = .finished
   }
   
 }

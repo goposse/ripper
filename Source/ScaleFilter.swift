@@ -35,9 +35,9 @@
 import Foundation
 import UIKit
 
-public class ScaleFilter : Filter {
+open class ScaleFilter : Filter {
   
-  public var outputSize: CGSize = CGSizeZero
+  open var outputSize: CGSize = CGSize.zero
   
   public init() {
   }
@@ -46,7 +46,7 @@ public class ScaleFilter : Filter {
     self.outputSize = CGSize(width: width, height: height)
   }
   
-  public func processImage(image image: UIImage) -> UIImage? {
+  open func processImage(image: UIImage) -> UIImage? {
     return image.scale(size: self.outputSize)
   }
   

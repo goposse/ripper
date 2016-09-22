@@ -38,36 +38,39 @@ import Haitch
 
 
 // MARK: - Callbacks
-public typealias ImageCallback = (image: UIImage?, error: NSError?) -> Void
+public typealias ImageCallback = (_ image: UIImage?, _ error: Error?) -> Void
 
 
-public class ImageFetcher {
+open class ImageFetcher {
 
-  public var dataTask: NSURLSessionDataTask!
-  private (set) public var isCanceled: Bool = false
-  private var httpClient: HttpClient!
-  private var imageUrl: String!
+  open var dataTask: URLSessionDataTask!
+  fileprivate (set) open var isCanceled: Bool = false
+  fileprivate var httpClient: HttpClient!
+  fileprivate var imageUrl: String!
   internal var headers: [String : String] = [:]
 
   public init(httpClient: HttpClient) {
     self.httpClient = httpClient
   }
-  
-  public func fetchAndReturnOnMain(imageUrl imageUrl: String, callback: ImageCallback) -> ImageFetcher {
+	
+	@discardableResult
+  open func fetchAndReturnOnMain(imageUrl: String, callback: @escaping ImageCallback) -> ImageFetcher {
     return internalFetch(imageUrl: imageUrl) { (image, error) -> Void in
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        callback(image: image, error: error)
+      DispatchQueue.main.async(execute: { () -> Void in
+        callback(image, error)
       })
     }
   }
 
-  public func fetch(imageUrl imageUrl: String, callback: ImageCallback) -> ImageFetcher {
+	@discardableResult
+  open func fetch(imageUrl: String, callback: @escaping ImageCallback) -> ImageFetcher {
     return internalFetch(imageUrl: imageUrl) { (image, error) -> Void in
-      callback(image: image, error: error)
+      callback(image, error)
     }
   }
-  
-  private func internalFetch(imageUrl imageUrl: String, callback: ImageCallback) -> ImageFetcher {
+	
+	@discardableResult
+  fileprivate func internalFetch(imageUrl: String, callback: @escaping ImageCallback) -> ImageFetcher {
     self.imageUrl = imageUrl
     var responseImage: UIImage?
     let request: Request = Request.Builder()
@@ -75,29 +78,30 @@ public class ImageFetcher {
       .method(Method.GET)
       .headers(self.headers)
       .build()
-    self.dataTask = self.httpClient.execute(request: request) { (response: Response?, error: NSError?) -> Void in
+		
+    self.dataTask = self.httpClient.execute(request: request) { (response: Response?, error: Error?) -> Void in
       if !self.isCanceled {
-        var taskError: NSError? = error
+        var taskError: Error? = error
         if response != nil {
           if response?.statusCode != 200 {
             taskError = NSError(domain: "com.goposse.ripper", code: (response?.statusCode)!,
                                 userInfo: [ NSLocalizedDescriptionKey : "Image download failed" ])
           } else {
-            if let data: NSData = response!.data {
+            if let data: Data = response!.data {
               if let image: UIImage = UIImage(data: data) {
                 responseImage = image
               }
             }
           }
         }
-        callback(image: responseImage, error: taskError)
+        callback(responseImage, taskError)
       }
     }
     return self
   }
   
   
-  public func cancel() {
+  open func cancel() {
     self.isCanceled = true
   }
 }

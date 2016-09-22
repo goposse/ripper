@@ -37,5 +37,5 @@ import Foundation
 import UIKit
 
 public protocol Filter {
-  func processImage(image image: UIImage) -> UIImage?
+  func processImage(image: UIImage) -> UIImage?
 }
