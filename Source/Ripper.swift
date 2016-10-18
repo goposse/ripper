@@ -52,7 +52,7 @@ open class Ripper {
   internal var headers: [String : String]?
   internal var filters: [Filter]?
   
-  fileprivate var operationQueue: OperationQueue!
+  fileprivate var operationQueue: RipOperationQueue!
   
 
   // MARK: - Public properties
@@ -97,7 +97,7 @@ open class Ripper {
     self.filters = []
     
     // initialize the operation queue
-    self.operationQueue = OperationQueue(downloader: self)
+    self.operationQueue = RipOperationQueue(downloader: self)
   }
 
   

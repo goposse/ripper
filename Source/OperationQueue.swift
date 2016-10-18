@@ -1,5 +1,5 @@
 //
-//  OperationQueue.swift
+//  RipOperationQueue.swift
 //  Ripper
 //
 //  Created by Posse in NYC
@@ -35,7 +35,7 @@
 import Foundation
 import UIKit
 
-internal class OperationQueue {
+internal class RipOperationQueue {
   
   fileprivate var allOperations: [Operation]
   fileprivate var downloader: Ripper

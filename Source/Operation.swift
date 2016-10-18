@@ -68,7 +68,7 @@ open class Operation {
   
   internal var fetcher: ImageFetcher?
   internal var filters: [Filter]?
-  internal var operationQueue: OperationQueue!
+  internal var operationQueue: RipOperationQueue!
   internal var downloader: Ripper!
   
   
@@ -79,7 +79,7 @@ open class Operation {
   
   
   // MARK: - Initialization
-  internal init(operationQueue: OperationQueue, downloader: Ripper) {
+  internal init(operationQueue: RipOperationQueue, downloader: Ripper) {
     self.operationQueue = operationQueue
     self.downloader = downloader
     self.fetcher = ImageFetcher(httpClient: downloader.httpClient)
@@ -88,7 +88,7 @@ open class Operation {
     self.filters = []
   }
 
-  internal convenience init(operationQueue: OperationQueue, downloader: Ripper, target: UIImageView) {
+  internal convenience init(operationQueue: RipOperationQueue, downloader: Ripper, target: UIImageView) {
     self.init(operationQueue: operationQueue, downloader: downloader)
     self.target = target
   }
