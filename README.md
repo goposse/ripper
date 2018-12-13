@@ -2,11 +2,12 @@
 <p align="center">
 <img src="https://raw.githubusercontent.com/goposse/ripper/assets/ripper_logo.png" align="center" width="460">
 </p>
+
+**RIPPER, ALONG WITH POSSE, IS NO MORE. THIS LIBRARY IS UNMAINTAINED AND IF YOU'RE USING IT YOU SHOULDN'T BE. THANKS!**
+
 <br/>
 > <b>Ripper</b> : great, fantastic - "that is a ripper of an image downloader"<br/>
 > <b>Ripper, you little!</b> : Exclamation of delight or as a reaction to good news<br/>
-
-**RIPPER, ALONG WITH POSSE, IS NO MORE. THIS LIBRARY IS UNMAINTAINED AND IF YOU'RE USING IT YOU SHOULDN'T BE. THANKS!**
 
 Ripper is an image download library written in Swift for iOS. It is simple, easy to use, and doesn't come stuffed with things you don't need.
 
